@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>lxb的个人博客</title>
-  
+  <icon>http://example.com/icon.png</icon>
   
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2022-02-21T07:55:56.780Z</updated>
+  <updated>2022-02-21T08:36:14.287Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,26 +21,29 @@
     <link href="http://example.com/2021/06/22/%E4%BD%BF%E7%94%A8Docker%E5%AE%89%E8%A3%85ActiveMq/"/>
     <id>http://example.com/2021/06/22/%E4%BD%BF%E7%94%A8Docker%E5%AE%89%E8%A3%85ActiveMq/</id>
     <published>2021-06-22T08:25:00.000Z</published>
-    <updated>2022-02-21T07:55:56.780Z</updated>
-    
-    <content type="html"><![CDATA[<p>环境：</p><ul><li>centos:7.9</li><li>docker:1.13.1</li><li>ActiveMq:latest</li></ul><h4 id="一、安装-docker-和-docker-compose"><a href="#一、安装-docker-和-docker-compose" class="headerlink" title="一、安装 docker 和 docker-compose"></a>一、安装 docker 和 docker-compose</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1.使用yum安装docker</span><br><span class="line">yum install -y docker</span><br><span class="line"># 2.安装epel第三方软件包(Extra Packages for Enterprise Linux)</span><br><span class="line">yum install -y epel-release</span><br><span class="line"># 3.安装docker编排</span><br><span class="line">yum install -y docker-compose</span><br></pre></td></tr></table></figure><h4 id="二、使用-docker-编排安装-ActiveMq"><a href="#二、使用-docker-编排安装-ActiveMq" class="headerlink" title="二、使用 docker 编排安装 ActiveMq"></a>二、使用 docker 编排安装 ActiveMq</h4><h5 id="compose-内容"><a href="#compose-内容" class="headerlink" title="compose 内容"></a>compose 内容</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">version: &#x27;3&#x27;</span><br><span class="line">services:</span><br><span class="line">  activemq-master:</span><br><span class="line">    container_name: activemq-master</span><br><span class="line">    #使用的镜像</span><br><span class="line">    image: webcenter/activemq</span><br><span class="line">    restart: always</span><br><span class="line">    #容器的映射端口</span><br><span class="line">    ports:</span><br><span class="line">      - 61616:61616</span><br><span class="line">      - 8161:8161</span><br><span class="line">    #定义挂载点</span><br><span class="line">    volumes:</span><br><span class="line">      - /etc/localtime:/etc/localtime:ro</span><br><span class="line">      - ./data/activemq/data:/data/activemq</span><br><span class="line">      - ./data/activemq/log:/var/log/activemq</span><br><span class="line">    #环境变量</span><br><span class="line">    environment:</span><br><span class="line">      - ACTIVEMQ_ADMIN_LOGIN=admin</span><br><span class="line">      - ACTIVEMQ_ADMIN_PASSWORD=admin</span><br><span class="line">      - ACTIVEMQ_CONFIG_MINMEMORY=512</span><br><span class="line">      - ACTIVEMQ_CONFIG_MAXMEMORY=2048</span><br><span class="line">      - TZ=Asia/Shanghai</span><br><span class="line">    privileged: true</span><br></pre></td></tr></table></figure><h5 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># -d 参数为后台执行</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure><h4 id="三、防火墙端口"><a href="#三、防火墙端口" class="headerlink" title="三、防火墙端口"></a>三、防火墙端口</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 1.查看当前开启的端口</span><br><span class="line">firewall-cmd --zone=public --list-ports --permanent</span><br><span class="line"># 2.添加开放永久端口</span><br><span class="line">firewall-cmd --zone=public --add-port=8161/tcp --permanent</span><br><span class="line">firewall-cmd --zone=public --add-port=61616/tcp --permanent</span><br><span class="line"># 3.重新加载配置</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure><h4 id="四、检查-ActiveMq-是否运行正常"><a href="#四、检查-ActiveMq-是否运行正常" class="headerlink" title="四、检查 ActiveMq 是否运行正常"></a>四、检查 ActiveMq 是否运行正常</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 1.查看容器运行情况</span><br><span class="line">docker ps</span><br><span class="line"># 2.容器日志查看</span><br><span class="line">docker logs activemq-master</span><br><span class="line">docker logs -f activemq-master 持续打印</span><br><span class="line">docker logs -f --tail 100 activemq-master 打印末端100行</span><br><span class="line">docker logs --tail 100 activemq-master &gt; activemq.log 输出日志到当前 activemq.log 文件中</span><br><span class="line"># 3.打开 http://localhost:8161/admin 查看 activemq 管理后台</span><br></pre></td></tr></table></figure>]]></content>
+    <updated>2022-02-21T08:36:14.287Z</updated>
     
     
       
       
+        
+        
     <summary type="html">&lt;p&gt;环境：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;centos:7.9&lt;/li&gt;
 &lt;li&gt;docker:1.13.1&lt;/li&gt;
 &lt;li&gt;ActiveMq:latest&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h4 id=&quot;一、安装-docker-和-docker-compose&quot;&gt;&lt;a href=&quot;#一、</summary>
+&lt;h4 id=&quot;一、安装-docker-和-docker-compose&quot;&gt;&lt;a</summary>
+        
       
     
     
     
     
     <category term="运维" scheme="http://example.com/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+    <category term="部署" scheme="http://example.com/tags/%E9%83%A8%E7%BD%B2/"/>
     
   </entry>
   
@@ -49,20 +52,23 @@
     <link href="http://example.com/2021/06/10/%E4%BD%BF%E7%94%A8Docker%E5%AE%89%E8%A3%85Redis/"/>
     <id>http://example.com/2021/06/10/%E4%BD%BF%E7%94%A8Docker%E5%AE%89%E8%A3%85Redis/</id>
     <published>2021-06-10T07:05:00.000Z</published>
-    <updated>2022-02-21T07:58:12.559Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="使用-Docker-安装-Redis"><a href="#使用-Docker-安装-Redis" class="headerlink" title="使用 Docker 安装 Redis"></a>使用 Docker 安装 Redis</h3><p>环境：</p><ul><li>centos:7.9 </li><li>docker:1.13.1</li><li>redis:latest</li></ul><h4 id="一、安装-docker-和-docker-compose"><a href="#一、安装-docker-和-docker-compose" class="headerlink" title="一、安装 docker 和 docker-compose"></a>一、安装 docker 和 docker-compose</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1.使用yum安装docker</span><br><span class="line">yum install -y docker</span><br><span class="line"># 2.安装epel第三方软件包(Extra Packages for Enterprise Linux)</span><br><span class="line">yum install -y epel-release</span><br><span class="line"># 3.安装docker编排</span><br><span class="line">yum install -y docker-compose</span><br></pre></td></tr></table></figure><h4 id="二、使用-docker-编排安装-redis"><a href="#二、使用-docker-编排安装-redis" class="headerlink" title="二、使用 docker 编排安装 redis"></a>二、使用 docker 编排安装 redis</h4><h5 id="compose-内容"><a href="#compose-内容" class="headerlink" title="compose 内容"></a>compose 内容</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">version: &#x27;3&#x27;</span><br><span class="line">services:</span><br><span class="line">  redis:</span><br><span class="line">    image: docker.io/redis</span><br><span class="line">    container_name: redis</span><br><span class="line">    restart: always</span><br><span class="line">    volumes:</span><br><span class="line">      - /etc/localtime:/etc/localtime:ro</span><br><span class="line">      - ./data/redis/data:/data</span><br><span class="line">      - ./data/redis/redis.conf:/etc/redis.conf</span><br><span class="line">      - ./data/redis/log:/var/log/redis</span><br><span class="line">    command: redis-server /etc/redis.conf</span><br><span class="line">    ports:</span><br><span class="line">      - 6379:6379</span><br><span class="line">    environment:</span><br><span class="line">      - TZ=Asia/Shanghai</span><br><span class="line">    privileged: true</span><br></pre></td></tr></table></figure><h5 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># -d 参数为后台执行</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure><h5 id="配置-redis-conf-文件"><a href="#配置-redis-conf-文件" class="headerlink" title="配置 redis.conf 文件"></a>配置 redis.conf 文件</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 对外开放访问</span><br><span class="line">bind 0.0.0.0</span><br><span class="line"># 开启aof模式</span><br><span class="line">appendonly yes</span><br><span class="line"># 使用每次更新都写到磁盘中</span><br><span class="line">appendfsync always</span><br></pre></td></tr></table></figure><p>把配置文件放入 .&#x2F;data&#x2F;redis&#x2F; 目录中<br>再使用 docker-compose 重启 redis 容器</p><h4 id="三、防火墙端口"><a href="#三、防火墙端口" class="headerlink" title="三、防火墙端口"></a>三、防火墙端口</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1.查看当前开启的端口</span><br><span class="line">firewall-cmd --zone=public --list-ports --permanent</span><br><span class="line"># 2.添加开放永久端口</span><br><span class="line">firewall-cmd --zone=public --add-port=6379/tcp --permanent</span><br><span class="line"># 3.重新加载配置</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure><h4 id="四、检查-redis-是否运行正常"><a href="#四、检查-redis-是否运行正常" class="headerlink" title="四、检查 redis 是否运行正常"></a>四、检查 redis 是否运行正常</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 1.查看容器运行情况</span><br><span class="line">docker ps</span><br><span class="line"># 2.容器日志查看</span><br><span class="line">docker logs redis</span><br><span class="line">docker logs -f redis 持续打印</span><br><span class="line">docker logs -f --tail 100 redis 打印末端100行</span><br><span class="line">docker logs --tail 100 redis &gt; redis.log 输出日志到当前 redis.log文件中</span><br></pre></td></tr></table></figure>]]></content>
+    <updated>2022-02-21T08:36:24.901Z</updated>
     
     
       
       
-    <summary type="html">&lt;h3 id=&quot;使用-Docker-安装-Redis&quot;&gt;&lt;a href=&quot;#使用-Docker-安装-Redis&quot; class=&quot;headerlink&quot; title=&quot;使用 Docker 安装 Redis&quot;&gt;&lt;/a&gt;使用 Docker 安装 Redis&lt;/h3&gt;&lt;p&gt;环境：&lt;/p</summary>
+        
+        
+    <summary type="html">&lt;h3 id=&quot;使用-Docker-安装-Redis&quot;&gt;&lt;a href=&quot;#使用-Docker-安装-Redis&quot; class=&quot;headerlink&quot; title=&quot;使用 Docker 安装 Redis&quot;&gt;&lt;/a&gt;使用 Docker 安装</summary>
+        
       
     
     
     
     
     <category term="运维" scheme="http://example.com/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+    <category term="部署" scheme="http://example.com/tags/%E9%83%A8%E7%BD%B2/"/>
     
   </entry>
   
@@ -71,24 +77,27 @@
     <link href="http://example.com/2021/06/10/%E4%BD%BF%E7%94%A8Docker%E5%AE%89%E8%A3%85Mongo/"/>
     <id>http://example.com/2021/06/10/%E4%BD%BF%E7%94%A8Docker%E5%AE%89%E8%A3%85Mongo/</id>
     <published>2021-06-10T07:00:00.000Z</published>
-    <updated>2022-02-21T07:56:21.796Z</updated>
-    
-    <content type="html"><![CDATA[<p>环境</p><ul><li>centos:7.9</li><li>docker:1.13.1</li><li>mongo:latest<h4 id="一、安装docker和docker-compose"><a href="#一、安装docker和docker-compose" class="headerlink" title="一、安装docker和docker-compose"></a>一、安装docker和docker-compose</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1.使用yum安装docker</span><br><span class="line">yum install -y docker</span><br><span class="line"># 2.安装epel第三方软件包(Extra Packages for Enterprise Linux)</span><br><span class="line">yum install -y epel-release</span><br><span class="line"># 3.安装docker编排</span><br><span class="line">yum install -y docker-compose</span><br></pre></td></tr></table></figure><h4 id="二、使用docker编排安装mongo"><a href="#二、使用docker编排安装mongo" class="headerlink" title="二、使用docker编排安装mongo"></a>二、使用docker编排安装mongo</h4><h5 id="compose内容"><a href="#compose内容" class="headerlink" title="compose内容"></a>compose内容</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mongodb:</span><br><span class="line">    image: docker.io/mongo</span><br><span class="line">    container_name: mongodb</span><br><span class="line">    restart: always</span><br><span class="line">    volumes:</span><br><span class="line">      - /etc/localtime:/etc/localtime:ro</span><br><span class="line">      - ./data/mongo/db:/data/db</span><br><span class="line">      - ./data/mongo/log:/var/log/mongodb</span><br><span class="line">    ports:</span><br><span class="line">      - 27017:27017</span><br><span class="line">    environment:</span><br><span class="line">      - MONGO_INITDB_ROOT_USERNAME=admin</span><br><span class="line">      - MONGO_INITDB_ROOT_PASSWORD=admin</span><br><span class="line">      - TZ=Asia/Shanghai</span><br><span class="line">    privileged: true</span><br></pre></td></tr></table></figure><h5 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># -d 参数为后台执行</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure><h4 id="三、防火墙端口"><a href="#三、防火墙端口" class="headerlink" title="三、防火墙端口"></a>三、防火墙端口</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1.查看当前开启的端口</span><br><span class="line">firewall-cmd --zone=public --list-ports --permanent</span><br><span class="line"># 2.添加开放永久端口</span><br><span class="line">firewall-cmd --zone=public --add-port=27017/tcp --permanent</span><br><span class="line"># 3.重新加载配置</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure><h4 id="四、检查-mongodb-是否运行正常"><a href="#四、检查-mongodb-是否运行正常" class="headerlink" title="四、检查 mongodb 是否运行正常"></a>四、检查 mongodb 是否运行正常</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 1.查看容器运行情况</span><br><span class="line">docker ps</span><br><span class="line"># 2.容器日志查看</span><br><span class="line">docker logs mongo</span><br><span class="line">docker logs -f mongodb 持续打印</span><br><span class="line">docker logs -f --tail 100 mongodb 打印末端100行</span><br><span class="line">docker logs --tail 100 mongodb &gt; mongodb.log 输出日志到当前mongodb.log文件中</span><br></pre></td></tr></table></figure></li></ul>]]></content>
+    <updated>2022-02-21T08:36:24.894Z</updated>
     
     
       
       
+        
+        
     <summary type="html">&lt;p&gt;环境&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;centos:7.9&lt;/li&gt;
 &lt;li&gt;docker:1.13.1&lt;/li&gt;
-&lt;li&gt;mongo:latest&lt;h4 id=&quot;一、安装docker和docker-compose&quot;&gt;&lt;a href=&quot;#一、安装docker和docker-com</summary>
+&lt;li&gt;mongo:latest&lt;h4 id=&quot;一、安装docker和docker-compose&quot;&gt;&lt;a</summary>
+        
       
     
     
     
     
     <category term="运维" scheme="http://example.com/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+    <category term="部署" scheme="http://example.com/tags/%E9%83%A8%E7%BD%B2/"/>
     
   </entry>
   
@@ -97,20 +106,23 @@
     <link href="http://example.com/2021/06/10/%E4%BD%BF%E7%94%A8Docker%E5%AE%89%E8%A3%85Mysql80/"/>
     <id>http://example.com/2021/06/10/%E4%BD%BF%E7%94%A8Docker%E5%AE%89%E8%A3%85Mysql80/</id>
     <published>2021-06-10T06:03:00.000Z</published>
-    <updated>2022-02-21T07:56:47.917Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="使用-Docker-安装-Mysql80"><a href="#使用-Docker-安装-Mysql80" class="headerlink" title="使用 Docker 安装 Mysql80"></a>使用 Docker 安装 Mysql80</h3><p>环境：</p><ul><li>centos:7.9</li><li>docker:1.13.1</li><li>mysql80:latest</li></ul><h4 id="一、安装-docker-和-docker-compose"><a href="#一、安装-docker-和-docker-compose" class="headerlink" title="一、安装 docker 和 docker-compose"></a>一、安装 docker 和 docker-compose</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1.使用yum安装docker</span><br><span class="line">yum install -y docker</span><br><span class="line"># 2.安装epel第三方软件包(Extra Packages for Enterprise Linux)</span><br><span class="line">yum install -y epel-release</span><br><span class="line"># 3.安装docker编排</span><br><span class="line">yum install -y docker-compose</span><br></pre></td></tr></table></figure><h4 id="二、使用-docker-编排安装-mysql80"><a href="#二、使用-docker-编排安装-mysql80" class="headerlink" title="二、使用 docker 编排安装 mysql80"></a>二、使用 docker 编排安装 mysql80</h4><h5 id="compose-内容"><a href="#compose-内容" class="headerlink" title="compose 内容"></a>compose 内容</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">version: &#x27;3&#x27;</span><br><span class="line">services:</span><br><span class="line">  mysql:</span><br><span class="line">    restart: always</span><br><span class="line">    image: docker.io/mysql</span><br><span class="line">    container_name: mysql80</span><br><span class="line">    volumes:</span><br><span class="line">      - /etc/localtime:/etc/localtime:ro</span><br><span class="line">      - ./data/mysql/mydir:/mydir</span><br><span class="line">      - ./data/mysql/datadir:/var/lib/mysql</span><br><span class="line">      - ./data/mysql/:/etc/my.cnf</span><br><span class="line">      #      数据库还原目录 可将需要还原的sql文件放在这里</span><br><span class="line">      - ./data/mysql/source:/docker-entrypoint-initdb.d</span><br><span class="line">    environment:</span><br><span class="line">      - &quot;MYSQL_ROOT_PASSWORD=6yhn^YHN&quot;</span><br><span class="line">      - &quot;TZ=Asia/Shanghai&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - 3306:3306</span><br><span class="line">    privileged: true</span><br></pre></td></tr></table></figure><h5 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># -d 参数为后台执行</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure><h4 id="三、防火墙端口"><a href="#三、防火墙端口" class="headerlink" title="三、防火墙端口"></a>三、防火墙端口</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 1.查看当前开启的端口</span><br><span class="line">firewall-cmd --zone=public --list-ports --permanent</span><br><span class="line"># 2.添加开放永久端口</span><br><span class="line">firewall-cmd --zone=public --add-port=3306/tcp --permanent</span><br><span class="line"># 3.重新加载配置</span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure><h4 id="四、检查-mysql-是否运行正常"><a href="#四、检查-mysql-是否运行正常" class="headerlink" title="四、检查 mysql 是否运行正常"></a>四、检查 mysql 是否运行正常</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 1.查看容器运行情况</span><br><span class="line">docker ps</span><br><span class="line"># 2.容器日志查看</span><br><span class="line">docker logs mysql80</span><br><span class="line">docker logs -f mysql80 持续打印</span><br><span class="line">docker logs -f --tail 100 mysql80 打印末端100行</span><br><span class="line">docker logs --tail 100 mysql80 &gt; mysql.log 输出日志到当前mysql.log文件中</span><br></pre></td></tr></table></figure>]]></content>
+    <updated>2022-02-21T08:36:24.888Z</updated>
     
     
       
       
-    <summary type="html">&lt;h3 id=&quot;使用-Docker-安装-Mysql80&quot;&gt;&lt;a href=&quot;#使用-Docker-安装-Mysql80&quot; class=&quot;headerlink&quot; title=&quot;使用 Docker 安装 Mysql80&quot;&gt;&lt;/a&gt;使用 Docker 安装 Mysql80&lt;/h3&gt;&lt;</summary>
+        
+        
+    <summary type="html">&lt;h3 id=&quot;使用-Docker-安装-Mysql80&quot;&gt;&lt;a href=&quot;#使用-Docker-安装-Mysql80&quot; class=&quot;headerlink&quot; title=&quot;使用 Docker 安装 Mysql80&quot;&gt;&lt;/a&gt;使用 Docker 安装</summary>
+        
       
     
     
     
     
     <category term="运维" scheme="http://example.com/tags/%E8%BF%90%E7%BB%B4/"/>
+    
+    <category term="部署" scheme="http://example.com/tags/%E9%83%A8%E7%BD%B2/"/>
     
   </entry>
   

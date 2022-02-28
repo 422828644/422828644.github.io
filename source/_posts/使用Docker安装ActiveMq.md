@@ -1,7 +1,8 @@
 ---
 title: 使用Docker安装ActiveMq
 date: 2021-06-22 16:25:00
-tags: 运维
+tags: [运维,部署]
+categories: [运维]
 ---
 环境：
 - centos:7.9

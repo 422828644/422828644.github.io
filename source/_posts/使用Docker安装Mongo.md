@@ -1,7 +1,8 @@
 ---
 title: 使用Docker安装Mongo
 date: 2021-06-10 15:00:00
-tags: 运维
+tags: [运维,部署]
+categories: [运维]
 ---
 环境
 - centos:7.9

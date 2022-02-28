@@ -1,7 +1,8 @@
 ---
 title: 使用 Docker 安装 Mysql80
 date: 2021-06-10 14:03:00
-tags: 运维
+tags: [运维,部署]
+categories: [运维]
 ---
 ### 使用 Docker 安装 Mysql80
 环境：

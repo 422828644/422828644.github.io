@@ -102,6 +102,23 @@ theme: nex
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
-  type: 'git'
-  repo: https://github.com/422828644/422828644.github.io.git
-  branch: master
+#  - type: 'git'
+#    repo: https://github.com/422828644/422828644.github.io.git
+#    branch: master
+  - type: 'git'
+    repo: https://gitee.com/LxBds/LxBds.git
+    branch: master
+
+feed:
+  enable: true
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content:
+  content_limit: 140
+  content_limit_delim: ' '
+  order_by: -date
+  icon: icon.png
+  autodiscovery: true
+  template:
